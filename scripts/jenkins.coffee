@@ -119,7 +119,6 @@ jenkinsDescribe = (msg) ->
               return
 
             path = "#{url}/job/#{job}/#{content.lastBuild.number}/api/json"
-            pipelinePath = "#{url}/job/#{job}/#{content.lastBuild.number}/wfapi/describe"
             req = msg.http(path)
             if process.env.HUBOT_JENKINS_AUTH
               auth = new Buffer(process.env.HUBOT_JENKINS_AUTH).toString('base64')
@@ -137,10 +136,6 @@ jenkinsDescribe = (msg) ->
                     jobstatus = content.result || 'PENDING'
                     jobdate = new Date(content.timestamp);
                     response += "LAST JOB: #{jobstatus}, #{jobdate}\n"
-                    #response += content._class
-                    if(content._class == "org.jenkinsci.plugins.workflow.job.WorkflowRun")
-                      response += "PIPELINE JOB\n"
-
                     msg.send response
                   catch error
                     msg.send error
@@ -153,12 +148,15 @@ jenkinsLast = (msg) ->
     job = msg.match[1]
 
     path = "#{url}/job/#{job}/lastBuild/api/json"
+    pipePath = "#{url}/job/#{job}/lastBuild/wfapi/describe"
 
     req = msg.http(path)
+    pipereq = msg.http(pipePath)
 
     if process.env.HUBOT_JENKINS_AUTH
       auth = new Buffer(process.env.HUBOT_JENKINS_AUTH).toString('base64')
       req.headers Authorization: "Basic #{auth}"
+      pipereq.headers Authorization: "Basic #{auth}"
 
     req.header('Content-Length', 0)
     req.get() (err, res, body) ->
@@ -175,6 +173,12 @@ jenkinsLast = (msg) ->
               response += "DESCRIPTION: #{content.description}\n"
 
             response += "BUILDING: #{content.building}\n"
+
+            if(content._class == "org.jenkinsci.plugins.workflow.job.WorkflowRun")
+              pipereq.get() (pipeerr, piperes, pipebody) ->
+                if(!err)
+                  pipecontent = JSON.parse(pipebody)
+                  response += "PIPELINE STATUS: #{pipecontent.status}\n"
 
             msg.send response
 

@@ -182,7 +182,9 @@ jenkinsLast = (msg) ->
                 else
                   response += "ERROR: #{pipeerr}"
 
-            msg.send response
+                msg.send response
+            else
+              msg.send response
 
 jenkinsList = (msg) ->
     url = process.env.HUBOT_JENKINS_URL

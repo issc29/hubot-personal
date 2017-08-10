@@ -176,9 +176,11 @@ jenkinsLast = (msg) ->
 
             if(content._class == "org.jenkinsci.plugins.workflow.job.WorkflowRun")
               pipereq.get() (pipeerr, piperes, pipebody) ->
-                if(!err)
+                if(!pipeerr)
                   pipecontent = JSON.parse(pipebody)
                   response += "PIPELINE STATUS: #{pipecontent.status}\n"
+                else
+                  response += "ERROR: #{pipeerr}"
 
             msg.send response
 

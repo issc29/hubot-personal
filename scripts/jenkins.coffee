@@ -119,6 +119,7 @@ jenkinsDescribe = (msg) ->
               return
 
             path = "#{url}/job/#{job}/#{content.lastBuild.number}/api/json"
+            pipelinePath = "#{url}/job/#{job}/#{content.lastBuild.number}/wfapi/describe"
             req = msg.http(path)
             if process.env.HUBOT_JENKINS_AUTH
               auth = new Buffer(process.env.HUBOT_JENKINS_AUTH).toString('base64')
@@ -136,6 +137,9 @@ jenkinsDescribe = (msg) ->
                     jobstatus = content.result || 'PENDING'
                     jobdate = new Date(content.timestamp);
                     response += "LAST JOB: #{jobstatus}, #{jobdate}\n"
+                    #response += content._class
+                    if(content._class == "org.jenkinsci.plugins.workflow.job.WorkflowRun")
+                      response += "PIPELINE JOB\n"
 
                     msg.send response
                   catch error

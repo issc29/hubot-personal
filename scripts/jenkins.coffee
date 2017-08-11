@@ -206,6 +206,7 @@ jenkinsApprove = (msg) ->
           msg.send "Send Request"
           response = ""
           try
+            msg.send "#{body}"
             content = JSON.parse(body)
             proceedUrl = "#{url}#{content.proceedUrl}"
             msg.send "#{proceedUrl}"

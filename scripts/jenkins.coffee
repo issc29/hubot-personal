@@ -214,7 +214,7 @@ jenkinsApprove = (msg) ->
             if process.env.HUBOT_JENKINS_AUTH
               approvereq.headers Authorization: "Basic #{auth}"
             approvereq.header('Content-Length', 0)
-            data = JSON.stringify({parameter: []})
+            data = JSON.stringify({ json: { parameter: [] }})
             approvereq.post(data) (approveerr, approveresp, approvebody) ->
               msg.send "Jenkins says: #{approveerr}"
               msg.send "Jenkins says: #{approveresp}"

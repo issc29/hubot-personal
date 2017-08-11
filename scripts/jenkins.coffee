@@ -186,6 +186,7 @@ jenkinsLast = (msg) ->
             else
               msg.send response
 jenkinsApprove = (msg) ->
+    msg.send "Approve Jenkins"
     url = process.env.HUBOT_JENKINS_URL
     job = msg.match[1]
 
@@ -283,4 +284,5 @@ module.exports = (robot) ->
     build: jenkinsBuild
     describe: jenkinsDescribe
     last: jenkinsLast
+    approve: jenkinsApprove
   }

@@ -203,11 +203,12 @@ jenkinsApprove = (msg) ->
         if err
           msg.send "Jenkins says: #{err}"
         else
+          msg.send "Send Request"
           response = ""
           try
             pipecontent = JSON.parse(pipebody)
             proceedUrl = "#{url}#{pipecontent.proceedUrl}"
-
+            msg.send "#{proceedUrl}"
             approvereq = msg.http(proceedUrl)
             if process.env.HUBOT_JENKINS_AUTH
               approvereq.headers Authorization: "Basic #{auth}"

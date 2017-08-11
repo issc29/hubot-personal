@@ -180,11 +180,44 @@ jenkinsLast = (msg) ->
                   pipecontent = JSON.parse(pipebody)
                   response += "PIPELINE STATUS: #{pipecontent.status}\n"
                 else
-                  response += "ERROR: #{pipeerr}"
+                  response += "PIPELINE STATUS: ERROR - #{pipeerr}"
 
                 msg.send response
             else
               msg.send response
+jenkinsApprove = (msg) ->
+    url = process.env.HUBOT_JENKINS_URL
+    job = msg.match[1]
+
+    pipePath = "#{url}/job/#{job}/lastBuild/wfapi/pendingInputActions"
+
+    pipereq = msg.http(pipePath)
+
+    if process.env.HUBOT_JENKINS_AUTH
+      auth = new Buffer(process.env.HUBOT_JENKINS_AUTH).toString('base64')
+      pipereq.headers Authorization: "Basic #{auth}"
+
+    pipereq.header('Content-Length', 0)
+    pipereq.get() (err, res, body) ->
+        if err
+          msg.send "Jenkins says: #{err}"
+        else
+          response = ""
+          try
+            pipecontent = JSON.parse(pipebody)
+            proceedUrl = "#{url}#{pipecontent.proceedUrl}"
+
+            approvereq = msg.http(proceedUrl)
+            if process.env.HUBOT_JENKINS_AUTH
+              approvereq.headers Authorization: "Basic #{auth}"
+            approvereq.header('Content-Length', 0)
+            data = JSON.stringify({parameter: []})
+            approvereq.post(data) (approveerr, approveresp, approvebody) ->
+              msg.send "Jenkins says: #{approveerr}"
+              msg.send "Jenkins says: #{approveresp}"
+              msg.send "Jenkins says: #{approvebody}"
+
+          msg.send response
 
 jenkinsList = (msg) ->
     url = process.env.HUBOT_JENKINS_URL
@@ -242,6 +275,8 @@ module.exports = (robot) ->
 
   robot.respond /j(?:enkins)? last (.*)/i, (msg) ->
     jenkinsLast(msg)
+  robot.respond /j(?:enkins)? approve (.*)/i, (msg) ->
+    jenkinsApprove(msg)
 
   robot.jenkins = {
     list: jenkinsList,

@@ -208,7 +208,7 @@ jenkinsApprove = (msg) ->
           try
             msg.send "#{body}"
             content = JSON.parse(body)
-            proceedUrl = "#{url}#{content.proceedUrl}"
+            proceedUrl = "#{url}#{content[0].proceedUrl}"
             msg.send "#{proceedUrl}"
             approvereq = msg.http(proceedUrl)
             if process.env.HUBOT_JENKINS_AUTH

@@ -179,6 +179,12 @@ jenkinsLast = (msg) ->
                 if(!pipeerr)
                   pipecontent = JSON.parse(pipebody)
                   response += "PIPELINE STATUS: #{pipecontent.status}\n"
+                  response += "STAGE STATUS: "
+                  if(pipecontent.stages instanceof Array)
+                    for element in pipecontent.stages
+    	                   response += element.name + '-' + element.status + " "
+                     response += "\n"
+
                 else
                   response += "PIPELINE STATUS: ERROR - #{pipeerr}"
 

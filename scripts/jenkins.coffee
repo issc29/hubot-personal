@@ -222,6 +222,7 @@ jenkinsApprove = (msg) ->
             if process.env.HUBOT_JENKINS_AUTH
               approvereq.headers Authorization: "Basic #{auth}"
             approvereq.header('Content-Length', 0)
+            approvereq.header('Content-type','application/x-www-form-urlencoded')
             data = 'json={"parameter":[]}'
             approvereq.post(data) (approveerr, approveresp, approvebody) ->
               msg.send "Jenkins says: #{approveerr}"

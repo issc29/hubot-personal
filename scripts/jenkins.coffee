@@ -214,10 +214,10 @@ jenkinsApprove = (msg) ->
           msg.send "Send Request"
           response = ""
           try
-            msg.send "#{body}"
+            #msg.send "#{body}"
             content = JSON.parse(body)
             proceedUrl = "#{url}#{content[0].proceedUrl}"
-            msg.send "#{proceedUrl}"
+            #msg.send "#{proceedUrl}"
             approvereq = msg.http(proceedUrl)
             if process.env.HUBOT_JENKINS_AUTH
               approvereq.headers Authorization: "Basic #{auth}"
@@ -225,9 +225,13 @@ jenkinsApprove = (msg) ->
             approvereq.header('Content-type','application/x-www-form-urlencoded')
             data = 'json={"parameter":[]}'
             approvereq.post(data) (approveerr, approveresp, approvebody) ->
-              msg.send "Jenkins says: #{approveerr}"
-              msg.send "Jenkins says: #{approveresp}"
-              msg.send "Jenkins says: #{approvebody}"
+              if approveerr
+                response += "#{job} Approved!"
+              else
+                response += "Jenkins says: #{err}"
+              #msg.send "Jenkins says: #{approveerr}"
+              #msg.send "Jenkins says: #{approveresp}"
+              #msg.send "Jenkins says: #{approvebody}"
 
           msg.send response
 

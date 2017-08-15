@@ -178,10 +178,12 @@ jenkinsLast = (msg) ->
               pipereq.get() (pipeerr, piperes, pipebody) ->
                 if(!pipeerr)
                   pipecontent = JSON.parse(pipebody)
-                  response += "PIPELINE STATUS2: #{pipecontent.status}\n"
-                  response += "STAGE STATUS: "
+                  response += "PIPELINE STATUS: #{pipecontent.status}\n"
+
                   if(pipecontent.stages instanceof Array)
-                    for element in pipecontent.stages
+                    response += "STAGE STATUS: "
+                    for element, index in pipecontent.stages
+                         if index != 0 then response += "| " 
     	                   response += element.name + '-' + element.status + " "
                      response += "\n"
 

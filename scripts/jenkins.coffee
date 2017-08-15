@@ -183,9 +183,9 @@ jenkinsLast = (msg) ->
                   if(pipecontent.stages instanceof Array)
                     response += "STAGE STATUS: "
                     for element, index in pipecontent.stages
-                         if index != 0 then response += "| " 
-    	                   response += element.name + '-' + element.status + " "
-                     response += "\n"
+      	               response += element.name + '-' + element.status + " "
+      	               response += "| "
+                    response += "\n"
 
                 else
                   response += "PIPELINE STATUS: ERROR - #{pipeerr}"

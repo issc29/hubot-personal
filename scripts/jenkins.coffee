@@ -194,7 +194,7 @@ jenkinsLast = (msg) ->
             else
               msg.send response
 jenkinsApprove = (msg) ->
-    msg.send "Approve Jenkins"
+    #msg.send "Approve Jenkins"
     url = process.env.HUBOT_JENKINS_URL
     job = msg.match[1]
 
@@ -208,11 +208,12 @@ jenkinsApprove = (msg) ->
 
     pipereq.header('Content-Length', 0)
     pipereq.get() (err, res, body) ->
+        response = ""
         if err
           msg.send "Jenkins says: #{err}"
         else
-          msg.send "Send Request"
-          response = ""
+          #msg.send "Send Request"
+
           try
             #msg.send "#{body}"
             content = JSON.parse(body)

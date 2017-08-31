@@ -227,9 +227,10 @@ jenkinsApprove = (msg) ->
             data = 'json={"parameter":[]}'
             approvereq.post(data) (approveerr, approveresp, approvebody) ->
               if approveerr
-                response += "#{job} Approved!"
-              else
                 response += "Jenkins says: #{err}"
+              else
+                response += "#{job} Approved!"
+              msg.send response
               #msg.send "Jenkins says: #{approveerr}"
               #msg.send "Jenkins says: #{approveresp}"
               #msg.send "Jenkins says: #{approvebody}"

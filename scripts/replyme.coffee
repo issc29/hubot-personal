@@ -14,4 +14,4 @@
 module.exports = (robot) ->
 
   robot.respond /reply/i, (res) ->
-    msg.send res.message.text
+    res.send res.message.text

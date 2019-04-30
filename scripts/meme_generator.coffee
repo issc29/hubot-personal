@@ -165,10 +165,12 @@ module.exports = (robot) ->
     if Math.random() > 0.5
       # Kirk khan
       memeGenerator msg, 6443, 1123022, "", khanify(msg.match[2]), (url) ->
+        console.log url
         msg.send url
     else
       # Spock khan
       memeGenerator msg, 2103732, 8814557, "", khanify(msg.match[2]), (url) ->
+        console.log url
         msg.send url
 
 

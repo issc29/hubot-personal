@@ -13,5 +13,5 @@
 
 module.exports = (robot) ->
 
-  robot.respond /reply/i, (res) ->
-    res.send res.message.text
+  robot.hear /reply (.*)/i, (res) ->
+    res.send res.match[1]
